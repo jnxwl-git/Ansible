@@ -1,0 +1,27 @@
+---
+- name: Change nameservers
+  hosts: all
+become: yes
+
+vars:
+  src_file: /home/master/file_transfer.py
+  dst_file: /home/
+
+tasks:
+- name: Change nameservers
+  shell: echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf> /dev/null
+
+- name: apt update
+  shell: apt update
+
+- name: Copy mail_sender.py
+  copy: src={{ src_file }} dest={{ dst_file }} mode=777
+
+
+
+----------
+
+Замена строки
+
+- name: edit UA
+  shell: sed -i "/clear_db/ s|True|False|" /data/autobcp/1269.ini

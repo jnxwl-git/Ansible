@@ -1,0 +1,38 @@
+Create folder:
+
+---
+- name: Create folder (Windows).
+  hosts: rndm
+
+  vars:
+    path: 'C:\poi'
+
+  tasks:
+
+   - name: create folder
+     ansible.windows.win_file:
+       path: "{{ path }}"
+       state: directory
+
+
+       - "uz-wh1-01-godex"
+            - "uz-wh1-01-sewoo"
+            - "uz-wh1-02-godex"
+            - "uz-wh1-02-sewoo"
+            - "uz-wh1-03-godex"
+            - "uz-wh1-03-sewoo"
+            - "uz-wh1-04-godex"
+            - "uz-wh1-04-sewoo"
+            - "uz-wh1-05-godex"
+            - "uz-wh1-05-sewoo"
+            - "uz-wh1-06-godex"
+            - "uz-wh1-06-sewoo"
+            - "uz-wh1-07-godex"
+            - "uz-wh1-07-sewoo"
+            - "uz-wh1-08-godex"
+            - "uz-wh1-08-sewoo"
+            - "uz-wh1-09-godex"
+            - "uz-wh1-09-sewoo"
+            - "uz-wh1-10-godex"
+            - "uz-wh1-10-sewoo"
+            - "uz-wh1-operator-sewoo"

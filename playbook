@@ -1,0 +1,55 @@
+### Playbook.yml ###
+
+---
+- name: Test Connection to my servers
+  hosts: all
+  become: yes
+
+  tasks:
+
+  - name: Ping my servers
+    ping:
+
+
+
+### Playbook2.yml ###
+
+---
+- name: Installing default Apache Web Server
+  hosts: all
+  become: yes
+
+  tasks:
+  - name: Install Apache
+    apt: name=apache2 state=Latest
+
+  - name: Start Apache
+    service: name=apache2 state=started enabled=yes
+
+
+### Playbook3.yml ###
+
+---
+- name: Install Apache and Upload my web page
+  hosts: all
+  become: yes
+
+  vars:
+    src_file: ./index.html
+    dst_file: /var/www/html
+
+  tasks:
+
+  - name: Install Apache2
+    apt: name=apache2 state=latest
+
+  - name: Copy Index to www
+    copy: src={{ src_file }} dest={{ dst_file }} mode=0555
+    notify: restart Apache2
+
+  - name: Start Apache2 and autorun
+    service: name=apache2 state=started enabled=yes
+
+  handlers:
+  - name: restart Apache2
+    service: name=apache2 state=restarted

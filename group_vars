@@ -1,0 +1,46 @@
+Имееем hosts.txt
+
+[a1]
+ansible1  ansible_host=192.168.88.10
+
+[a1:vars]
+ansible_port=50001
+ansible_ssh_pass=q1a2
+ansible_ssh_user=a1
+ansible_sudo_pass=q1a2
+
+[a2]
+ansible2    ansible_host=192.168.88.11 ansible_port=50002 ansible_ssh_pass=q1a2 ansible_ssh_user=a2 ansible_sudo_pass=q1a2
+
+[a3]
+ansible3    ansible_host=192.168.88.12 ansible_port=50003 ansible_ssh_pass=q1a2 ansible_ssh_user=a3 ansible_sudo_pass=q1a2
+
+[SRV:children]
+a1
+a2
+
+[SRV:vars]
+owner=vasya
+location="Moscow"
+
+
+далее создаем папку group_vars, в ней файлы в именем групп с переменными из hosts.txt
+
+a1
+SRV
+
+В a1 добавляем из [a1:vars] с следующем формате с заменой = на :
+
+---
+ansible_port : 50001
+ansible_ssh_pass : q1a2
+ansible_ssh_user : a1
+ansible_sudo_pass : q1a2
+
+
+в SRV
+
+---
+owner : vasya
+location : "Moscow"
+environment : PROD

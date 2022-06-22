@@ -1,0 +1,70 @@
+---
+- name: Create spooler directory for each printer.
+  hosts: UZ
+  become: yes
+
+  vars:
+    spooler_path: 'C:\spooler'
+
+  tasks:
+
+  - name: Create spooler directory.
+    ansible.windows.win_file:
+      path: "{{ spooler_path }}"
+      state: directory
+
+  - name: Create directory for each printer.
+    ansible.windows.win_file:
+      file: dest={{ spooler path}}\{{ item }}
+      state: directory
+      with_items:
+          - uz-wh1-01-godex
+          - uz-wh1-01-sewoo
+          - uz-wh1-02-godex
+          - uz-wh1-02-sewoo
+          - uz-wh1-03-godex
+          - uz-wh1-03-sewoo
+          - uz-wh1-04-godex
+          - uz-wh1-04-sewoo
+          - uz-wh1-05-godex
+          - uz-wh1-05-sewoo
+          - uz-wh1-06-godex
+          - uz-wh1-06-sewoo
+          - uz-wh1-07-godex
+          - uz-wh1-07-sewoo
+          - uz-wh1-08-godex
+          - uz-wh1-08-sewoo
+          - uz-wh1-09-godex
+          - uz-wh1-09-sewoo
+          - uz-wh1-10-godex
+          - uz-wh1-10-sewoo
+          - uz-wh1-operator-sewoo
+
+  - name: Edit paths in registry.
+    ansible.windows.win_regedit:
+      key: HKLM:\SYSTEM\CurrentControlSet\Control\Print\Printers\{{ item }}
+      type: string
+      name: SpoolDirectory
+      data: {{ spooler_path }}\{{ item }}
+      with_items:
+          - uz-wh1-01-godex
+          - uz-wh1-01-sewoo
+          - uz-wh1-02-godex
+          - uz-wh1-02-sewoo
+          - uz-wh1-03-godex
+          - uz-wh1-03-sewoo
+          - uz-wh1-04-godex
+          - uz-wh1-04-sewoo
+          - uz-wh1-05-godex
+          - uz-wh1-05-sewoo
+          - uz-wh1-06-godex
+          - uz-wh1-06-sewoo
+          - uz-wh1-07-godex
+          - uz-wh1-07-sewoo
+          - uz-wh1-08-godex
+          - uz-wh1-08-sewoo
+          - uz-wh1-09-godex
+          - uz-wh1-09-sewoo
+          - uz-wh1-10-godex
+          - uz-wh1-10-sewoo
+          - uz-wh1-operator-sewoo

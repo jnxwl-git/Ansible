@@ -1,0 +1,53 @@
+Начало всегда с --- на первой строчке
+
+начанается с пробел потом -
+
+
+---
+
+ - command1
+ - command2
+
+
+
+---
+
+  fruits:
+    - apple
+    - orange
+    - mango
+
+
+---
+
+ - fruits:
+  - apple
+  - orange
+  - mango
+ - vegetables:
+   -carrots
+   -cucumbers
+
+
+
+
+ - vasya:
+      nick: vasek
+      position: developer
+      skills:
+        - python
+        - perl
+        - php
+
+ - petya:
+      nick: pet / "pettya: krutoy"
+      position: manager
+      skills:
+        - manege
+        - make_noise
+
+
+
+- kolya: { nick: kolyan, position: administrator, skills: ['killer', 'cleaner'] }
+
+fruits: ['apple', 'orange', 'mango']

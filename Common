@@ -1,0 +1,107 @@
+echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf > /dev/null
+
+
+### ANSIBLE.CFG ###
+
+[defaults]
+host_key_cheking = false
+inventory        = ./hosts.txt
+
+
+
+### HOSTS.TXT ###
+[a1]
+ansible1  ansible_host=192.168.88.10
+
+[a1:vars]
+ansible_port=50001
+ansible_ssh_pass=q1a2
+ansible_ssh_user=a1
+ansible_sudo_pass=q1a2
+
+
+[a2]
+ansible2    ansible_host=192.168.88.11 ansible_port=50002 ansible_ssh_pass=q1a2 ansible_ssh_user=a2 ansible_sudo_pass=q1a2
+
+
+[a3]
+ansible3    ansible_host=192.168.88.12 ansible_port=50003 ansible_ssh_pass=q1a2 ansible_ssh_user=a3 ansible_sudo_pass=q1a2
+
+
+
+[SRV:children]
+a1
+a2
+
+[SRV:vars]
+owner=vasya
+location="Moscow"
+
+
+
+
+### START ###
+
+Список_серверов > ansible-inventory --list
+
+
+
+ansible -i hosts.txt a2 -m ping
+
+ansible all -m ping
+
+ansible a1 -m ping
+
+
+cat ~/.ssh/id_rsa.pub | ssh root@ip-адрес-сервера 'cat >> ~/.ssh/authorized_keys'
+
+
+ansible -i hosts.txt a2 -m ping
+
+
+ansible all -m setup
+
+
+ansible all -m shell -a "cd ~ | ls"
+
+
+//Команды
+ansible-doc -l
+
+
+// копирование файлов
+ansible all -m copy -a "src=1.txt dest=/home mode=777" -b
+
+// удаление файлов
+ansible all -m file -a "path=/home/1.txt state=absent" -b
+
+// установка программ
+ansible all -m apt -a "name=net-tools state=latest" -b
+
+// удаление программ
+ansible all -m apt -a "name=net-tools state=removed" -b
+
+// пробевка подключения
+ansible all -m uri -a "url=http://www.adv-it.net"
+
+// пробевка подключения c return
+ansible all -m uri -a "url=http://www.adv-it.net return_content=yes"
+
+// старт сервиса + автозагрузка
+ansible all -m service -a "name=httpd state=started enabled=yes" -b
+
+// debug -v -vv -vvv -vvvv -vvvvv
+ansible a1 -m shell -a "ls /var" -vvvvv
+
+
+После ввода команды в текущем каталоге (в нашем примере, /etc/ansible/roles) будет создана папка с названием роли, а в ней следующая структура каталогов:
+
+defaults — переменные по умолчанию. У них самый низкий приоритет и их могут легко переопределить переменные в каталоге vars (ниже по списку).
+files — для файлов, которые могут быть скопированы на настраиваемый сервер.
+handlers — обработчики, которые могут запускаться при определенных обстоятельствах. Например, перезапуск сервиса в случае обновления конфигурационного файла.
+meta — добавление метаданных, например: автор, описание, среда и так далее.
+tasks — папка с описанием выполняемых задач.
+templates — файлы с шаблонами. Мы можем использовать переменные в данных шаблонах — тогда при копировании файлов, они будут заменяться значениями.
+tests — скрипты для выполнения тестов — ansible покажет результаты выполнения команд, но не применит их.
+vars — файлы с переменными. Имеют высокий приоритет.
+После будем приступать к настройке роли, созданию и запуску плейбука.

@@ -1,0 +1,32 @@
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+
+
+[all:vars]
+   ansible_winrm_server_cert_validation=ignore
+
+
+ERROR ANSIBLE>
+
+put this export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES in your ~/.bash_profile
+
+if you're using oh-my-zsh, edit ~/.zshrc and put this export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES at the beginning of file
+
+and then reload your zsh config $ source ~/.zshrc
+
+
+>>>>>>
+
+
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+$url = "https://raw.githubusercontent.com/ansible/ansible/devel/examples/scripts/ConfigureRemotingForAnsible.ps1"
+$file = "$env:temp\ConfigureRemotingForAnsible.ps1"
+
+(New-Object -TypeName System.Net.WebClient).DownloadFile($url, $file)
+
+powershell.exe -ExecutionPolicy ByPass -File $file
+
+
+
+>>>>>>
+
+winrm enumerate winrm/config/Listener
