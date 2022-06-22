@@ -8,6 +8,7 @@ host_key_cheking = false
 inventory        = ./hosts.txt
 
 
+ва
 
 ### HOSTS.TXT ###
 [a1]
