@@ -1,0 +1,109 @@
+--------------------------------------------------------------------------------
+$ sudo apt update
+$ sudo apt install software-properties-common
+$ sudo add-apt-repository --yes --update ppa:ansible/ansible
+$ sudo apt install ansible
+
+or
+
+sudo apt install python ansible -y
+
+-------------------------------------------------------------------------------
+
+ssh-keygen (PC-1)
+
+ssh-copy-id -i ~/.ssh/id_rsa.pub johndoe@10.140.67.23 (>PC-2)
+
+sudo nano /etc/ssh/sshd_config
+PermitRootLogin > yes
+PasswordAuthentication > no
+
+systemctl restart sshd
+
+sudo chmod 400 ~/.ssh/id_rsa.pub
+
+ssh-keyscan 10.0.15.21 >> ~/.ssh/known_hosts
+
+
+--------------------------------------------------------------------------------
+hosts.txt >
+[Ubuntu]
+Ubuntu ansible_host=192.168.88.7 ansible_user=jnxwl
+
+OR
+
+hosts.txt >
+[staging_DB]
+10.10.10.1
+10.10.10.2
+
+[staging_WEB]
+10.10.12.1
+10.10.12.2
+
+[staging_APP]
+10.10.15.1
+10.10.15.2
+
+[staging_ALL:children]
+staging_DB
+staging_WEB
+staging_APP
+
+[prod_DB]
+10.10.10.1
+10.10.10.2
+
+[prod_WEB]
+10.10.12.1
+10.10.12.2
+
+[prod_APP]
+10.10.15.1
+10.10.15.2
+
+[prod_ALL:children]
+prod_DB
+prod_WEB
+prod_APP
+
+[DB_ALL:children]
+staging_DB
+prod_DB
+
+[APP_ALL:children]
+staging_APP
+prod_APP
+
+[OTHERS:children]
+APP_ALL
+DB_ALL
+
+[prod_servers:vars]
+ansible_user=jnxwl
+
+
+run >
+ansible -i hosts.txt all -m ping
+
+-------------------------------------------------------------------------------
+
+ansible.cfg >
+
+[defaults]
+host_key_checking = false
+inventory         = ./hosts.txt
+
+run >
+ansible all -m ping
+
+-------------------------------------------------------------------------------
+Дерево проекта.
+
+ansible-inventory --list
+
+-------------------------------------------------------------------------------
+
+ansible all -m setup
+
+-------------------------------------------------------------------------------
