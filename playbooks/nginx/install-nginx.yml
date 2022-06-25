@@ -9,8 +9,8 @@
 
   tasks:
 
-  - name: apt update
-    shell: apt-get update
+    - name: apt update
+      shell: apt-get update
 
   - name: Install nginx and htop
     apt: name={{ item }} state=latest forced=yes
