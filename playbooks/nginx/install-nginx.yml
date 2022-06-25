@@ -12,7 +12,7 @@
   tasks:
 
     - name: Install nginx and htop
-      apt: name={{ item }} state=latest forced=yes
+      apt: name={{ item }} state=latest
       with_items: "{{ PACKAGES }}"
 
     - name: Start Nginx and autorun
