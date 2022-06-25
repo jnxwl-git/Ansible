@@ -7,7 +7,7 @@
 
   vars:
     src_file: index.html
-    dst_file: /usr/local/nginx/html/index.html
+    dst_file: /usr/share/nginx/html/index.html
 
   tasks:
 
