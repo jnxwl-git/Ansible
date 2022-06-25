@@ -1,0 +1,27 @@
+---
+- name: Install nginx to VM:PROD
+  hosts: all
+  become: true
+
+  vars:
+    src_file: index.html
+    dst_file: /usr/local/nginx/html/index.html
+
+  tasks:
+
+  - name: apt update
+    shell: apt-get update
+
+  - name: Install nginx and htop
+    apt: name={{ item }} state=latest forced=yes
+    with_items: "{{ PACKAGES }}"
+
+  - name: Start Nginx and autorun
+    service: name=nginx state=started enabled=yes
+
+  - name: copy index
+    copy: src={{ src_file }} dest={{ dst_file }} mode=0555
+
+  handlers:
+  - name: restart Nginx
+    service: name=nginx state=restarted
